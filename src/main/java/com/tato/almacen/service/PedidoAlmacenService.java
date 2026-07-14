@@ -29,6 +29,8 @@ public class PedidoAlmacenService {
     private final UsuarioRepository usuarioRepository;
     private final HistorialRepository historialRepository;
     private final NotificacionPushService notificacionPushService;
+    private final VentaRepository ventaRepository;
+
 
     // ==================== Creacion (simulada, para pruebas) ====================
 
@@ -206,6 +208,15 @@ public class PedidoAlmacenService {
         pedido.setEstado("ENTREGADO");
         pedido.setFechaEntrega(LocalDateTime.now());
         pedidoAlmacenRepository.save(pedido);
+
+        // Cierra el ciclo: la venta quedo en PENDIENTE_ALMACEN al procesarse
+        // (ver VentaService del sistema principal); ahora que el almacenero
+        // confirma la entrega, la venta pasa a REGISTRADA definitivamente.
+        if (pedido.getVenta() != null) {
+            Venta venta = pedido.getVenta();
+            venta.setEstadoVenta("REGISTRADA");
+            ventaRepository.save(venta);
+        }
 
         Historial historial = new Historial();
         historial.setAccion("PEDIDO_ENTREGADO");
