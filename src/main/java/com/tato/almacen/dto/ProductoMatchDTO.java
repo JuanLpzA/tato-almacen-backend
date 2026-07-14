@@ -5,5 +5,6 @@ public record ProductoMatchDTO(
         String nombre,
         Integer stock,
         Double porcentaje,
-        String estado // "Coincidencia" | "Alternativa" | "Sin stock"
+        String estado, // "Coincidencia" | "Alternativa" | "Sin stock"
+        String imagen
 ) {}

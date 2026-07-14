@@ -202,42 +202,23 @@ public class IdentificacionIAService {
 
 
 
-    private ProductoMatchDTO mapear(
-            InventarioSucursal inv,
-            double porcentaje
-    ) {
-
+    private ProductoMatchDTO mapear(InventarioSucursal inv, double porcentaje) {
         String estado;
-
-
         if (inv.getStock() == null || inv.getStock() == 0) {
-
             estado = "Sin stock";
-
         } else if (porcentaje >= UMBRAL_COINCIDENCIA_FUERTE) {
-
             estado = "Coincidencia";
-
         } else {
-
             estado = "Alternativa";
         }
-
-
-        System.out.println(
-                "Mapeando producto: "
-                        + inv.getProducto().getNombre()
-                        + " => "
-                        + estado
-        );
-
 
         return new ProductoMatchDTO(
                 inv.getProducto().getId(),
                 inv.getProducto().getNombre(),
                 inv.getStock(),
                 porcentaje,
-                estado
+                estado,
+                inv.getProducto().getImagen()
         );
     }
 }
